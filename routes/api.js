@@ -30,6 +30,63 @@ router.get('/profile', (req, res) => {
 	})
 })
 
+router.get('/profile/update', (req, res) => {
+	const query = req.query
+	const profileID = query.id
+	delete query['id']
+
+	Profile.findById(profileID, query, {new:true})
+	.then(profile => {
+		res.json({
+			confirmation: 'success',
+			data: profile
+		})
+	})
+	.catch(err => {
+		res.json({
+			confirmation:'fail',
+			message: err.message
+		})
+	})
+})
+
+router.get('/profile/:id', (req, res) => {
+	const id = req.params.id
+
+	Profile.findById(id)
+	.then(profile => {
+		res.json({
+			confirmation: 'success',
+			data: profile
+		})
+	})
+	.catch(err => {
+		res.json({
+			confirmation:'fail',
+			message: 'Profile ' + id + ' not found'
+		})
+	})
+})
+
+router.post('/profile', (req, res) => {
+	Profile.create(req.body)
+	.then(profile => {
+		res.json({
+			confirmation: 'success',
+			data: profile
+		})
+	})
+	.catch(err => {
+		res.json({
+			confirmation:'fail',
+			message: err.message
+		})
+	})
+})
+
+
+
+
 router.get('/team', (req, res) => {
 	var query = req.query
 
