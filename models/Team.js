@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const Team = new mongoose.Schema({
     location: {type:String, trim:true, default:''},

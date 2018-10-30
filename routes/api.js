@@ -30,16 +30,35 @@ router.get('/profile', (req, res) => {
 	})
 })
 
+//NON RESTful use router.put()
 router.get('/profile/update', (req, res) => {
 	const query = req.query
 	const profileID = query.id
 	delete query['id']
 
-	Profile.findById(profileID, query, {new:true})
+	Profile.findByIdAndUpdate(profileID, query, {new:true})
 	.then(profile => {
 		res.json({
 			confirmation: 'success',
 			data: profile
+		})
+	})
+	.catch(err => {
+		res.json({
+			confirmation:'fail',
+			message: err.message
+		})
+	})
+})
+
+router.get('/profile/remove', (req, res) => {
+	const query = req.query
+
+	Profile.findByIdAndRemove(query.id)
+	.then(data => {
+		res.json({
+			confirmation: 'success',
+			data: 'Profile ' + query.id + ' successfully removed'
 		})
 	})
 	.catch(err => {
